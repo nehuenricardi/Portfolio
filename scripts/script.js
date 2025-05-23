@@ -136,30 +136,51 @@ document.addEventListener('DOMContentLoaded', function () {
     fadeInSections();
 });
 
-const demoPopup = document.getElementById('demoPopup');
+// POPUPS para demos de proyectos
+
+const demoPopupPomodoro = document.getElementById('demoPopupPomodoro');
 const btnDemoPomodoro = document.getElementById('btn-demo-pomodoro');
-const closePopup = document.querySelector('.close-popup');
 
-// Abrir popup al hacer clic en el botón demo
+const demoPopupNasapp = document.getElementById('demoPopupNasapp');
+const btnDemoNasapp = document.getElementById('btn-demo-nasapp');
+
+// Función para abrir popup
+function abrirPopup(popup) {
+  if (popup) {
+    popup.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Evitar scroll fondo
+  }
+}
+
+// Función para cerrar popup
+function cerrarPopup(popup) {
+  if (popup) {
+    popup.classList.remove('active');
+    document.body.style.overflow = 'auto'; // Restaurar scroll
+  }
+}
+
+// Abrir popup PomodoroApp
 if (btnDemoPomodoro) {
-    btnDemoPomodoro.addEventListener('click', function () {
-        demoPopup.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Evitar scroll en el fondo
-    });
+  btnDemoPomodoro.addEventListener('click', () => abrirPopup(demoPopupPomodoro));
 }
 
-// Cerrar popup al hacer clic en la X
-if (closePopup) {
-    closePopup.addEventListener('click', function () {
-        demoPopup.classList.remove('active');
-        document.body.style.overflow = 'auto'; // Restaurar scroll
-    });
+// Abrir popup NasApp
+if (btnDemoNasapp) {
+  btnDemoNasapp.addEventListener('click', () => abrirPopup(demoPopupNasapp));
 }
 
-// Cerrar popup al hacer clic fuera del contenido
-window.addEventListener('click', function (e) {
-    if (e.target === demoPopup) {
-        demoPopup.classList.remove('active');
-        document.body.style.overflow = 'auto'; // Restaurar scroll
-    }
+// Cerrar popup al hacer click en la X (cerrar) para ambos popups
+document.querySelectorAll('.popup .close-popup').forEach(closeBtn => {
+  closeBtn.addEventListener('click', (e) => {
+    const popup = e.target.closest('.popup');
+    cerrarPopup(popup);
+  });
+});
+
+// Cerrar popup al hacer click fuera del contenido para ambos popups
+window.addEventListener('click', (e) => {
+  if (e.target.classList.contains('popup') && e.target.classList.contains('active')) {
+    cerrarPopup(e.target);
+  }
 });
